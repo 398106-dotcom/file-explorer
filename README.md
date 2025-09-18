@@ -12,6 +12,6 @@ Browse directories, view folders, and download files directly from the browser.
 ## 📦 Install
 Clone the repo and install dependencies:
 ```bash
-git clone https://github.com/YOUR-USERNAME/file-explorer.git
+git clone https://github.com/398106-dotcom/file-explorer
 cd file-explorer
 pip install -r requirements.txt
