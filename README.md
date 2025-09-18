@@ -1,17 +1,34 @@
-# Python Flask File Explorer
+Python Flask File Explorer
 
-A simple web-based file explorer built with Flask.  
-Browse directories, view folders, and download files directly from the browser.
+A web-based file explorer built with Flask.
+Browse directories, manage files, and interact with a sandboxed file system directly from your browser.
 
-## 🚀 Features
-- Browse files & directories
-- Download files
-- Parent directory navigation
-- Root directory sandboxed (safe from traversal)
+FEATURES:
 
-## 📦 Install
-Clone the repo and install dependencies:
-```bash
-git clone https://github.com/398106-dotcom/file-explorer
-cd file-explorer
-pip install -r requirements.txt
+- User accounts: register, login, logout
+- Per-user folders: each user sees only their own files
+- Browse files & directories: navigate subfolders
+- File management: upload, rename, delete files and folders (including non-empty folders)
+- Edit text files: read and save .txt files directly in the browser
+- Download files: download any file from your folder
+- Breadcrumb navigation: easily move between directories
+- Icons for files/folders: intuitive interface with emoji icons
+- Sandboxed root directory: prevents access to files outside the app
+
+INSTALL:
+
+1. Clone the repository:
+   git clone https://github.com/398106-dotcom/file-explorer
+2. Enter the folder:
+   cd file-explorer
+3. Install dependencies:
+   pip install -r requirements.txt
+
+
+SECURITY NOTES:
+
+- Uses a strong secret key for session management
+- User passwords are hashed with werkzeug.security
+- Each user’s files are isolated in their own folder
+
+Enjoy your web-based Python file explorer!
