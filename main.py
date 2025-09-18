@@ -1,26 +1,30 @@
 import os
-from flask import Flask, send_from_directory, render_template_string, abort
+from flask import Flask, send_from_directory, render_template_string, abort, request, redirect, url_for
 
 app = Flask(__name__)
 
-# Root folder for the file explorer
+# Root folder
 ROOT_DIR = os.path.abspath("shared")
 
 # Ensure folder exists
 if not os.path.exists(ROOT_DIR):
     os.makedirs(ROOT_DIR)
 
-# Add a sample file if folder is empty
+# Add sample file if folder is empty
 if not os.listdir(ROOT_DIR):
     sample_file = os.path.join(ROOT_DIR, "hello.txt")
     with open(sample_file, "w") as f:
         f.write("Hello! This is a sample file for your Python file explorer.\n")
 
-# HTML template
+# HTML template with upload form
 TEMPLATE = """
 <!doctype html>
 <title>File Explorer</title>
 <h2>Index of /{{ path }}</h2>
+<form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data">
+  <input type="file" name="file">
+  <input type="submit" value="Upload">
+</form>
 <ul>
   {% if parent %}
     <li><a href="{{ url_for('browse', subpath=parent) }}">.. (parent)</a></li>
@@ -76,7 +80,17 @@ def download(subpath):
     filename = os.path.basename(abs_path)
     return send_from_directory(directory, filename, as_attachment=True)
 
+@app.route('/upload', methods=['POST'])
+def upload():
+    if 'file' not in request.files:
+        return redirect(request.referrer)
+    file = request.files['file']
+    if file.filename == '':
+        return redirect(request.referrer)
+    save_path = os.path.join(ROOT_DIR, file.filename)
+    file.save(save_path)
+    return redirect(url_for('browse', subpath=''))
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port, debug=True)
-
