@@ -63,6 +63,17 @@ FILE EXPLORER SECURITY POLICY
 - Disable debug mode in production.
 - Limit resource usage and concurrent operations.
 
+11. Responsible Disclosure
+--------------------------
+- If you discover a security vulnerability, please report it immediately.
+- Include:
+  - Steps to reproduce the issue
+  - Impact assessment (what could happen)
+  - Any proof-of-concept code or screenshots
+- Send your report to: security@example.com
+- We will acknowledge receipt and provide updates as the issue is addressed.
+- Do NOT attempt to exploit the vulnerability beyond testing, delete data, or disrupt service.
+
 =============================
 END OF SECURITY POLICY
 =============================
