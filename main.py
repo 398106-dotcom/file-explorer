@@ -6,8 +6,7 @@ from flask import Flask, send_from_directory, render_template_string, abort, req
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.secret_key = "YOUR SECRET KEY"  # strong secret key
-
+app.secret_key = "YOUR SECRET KEY"
 ROOT_DIR = os.path.abspath("shared")
 USERS_FILE = "users.json"
 
@@ -99,6 +98,13 @@ TEMPLATE = """
   <input type="submit" value="Create Folder">
 </form>
 
+<!-- NEW: Create File Form -->
+<form method="POST" action="{{ url_for('create_file') }}">
+  <input type="text" name="file_name" placeholder="New file name" required>
+  <input type="hidden" name="current_path" value="{{ path }}">
+  <input type="submit" value="Create File">
+</form>
+
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     <ul style="color:red;">
@@ -171,7 +177,6 @@ def get_user_folder():
     user_folder = os.path.join(ROOT_DIR, username)
     if not os.path.exists(user_folder):
         os.makedirs(user_folder)
-        # Add sample file if empty
         if not os.listdir(user_folder):
             sample_file = os.path.join(user_folder, "test.txt")
             with open(sample_file, "w") as f:
@@ -290,6 +295,29 @@ def create_folder():
         new_folder_path = os.path.join(target_dir, folder_name)
         if not os.path.exists(new_folder_path):
             os.makedirs(new_folder_path)
+    return redirect(url_for('browse', subpath=current_path))
+
+# ---------- NEW: Create File ----------
+@app.route('/create_file', methods=['POST'])
+@login_required
+def create_file():
+    file_name = request.form.get('file_name')
+    current_path = request.form.get('current_path', '')
+    user_folder = get_user_folder()
+    target_dir = safe_join(user_folder, current_path)
+
+    if not file_name or not target_dir:
+        flash("Invalid file name or path")
+        return redirect(request.referrer)
+
+    new_file_path = os.path.join(target_dir, file_name)
+    if os.path.exists(new_file_path):
+        flash("File already exists!")
+    else:
+        with open(new_file_path, 'w', encoding='utf-8') as f:
+            f.write("")  # empty content
+        flash(f"Created new file: {file_name}")
+
     return redirect(url_for('browse', subpath=current_path))
 
 @app.route('/delete/<path:subpath>')
