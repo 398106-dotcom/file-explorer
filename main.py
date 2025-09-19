@@ -7,6 +7,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = "YOUR SECRET KEY"
+# Limit uploads to 50MB
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
+
 ROOT_DIR = os.path.abspath("shared")
 USERS_FILE = "users.json"
 
