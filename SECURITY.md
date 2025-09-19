@@ -18,7 +18,7 @@ FILE EXPLORER SECURITY POLICY
 3. File Upload Security
 ----------------------
 - Only allowed file types can be uploaded.
-- Maximum upload size is enforced (e.g., 5MB).
+- Maximum upload size is enforced (e.g., 50MB).
 - Filenames are sanitized to remove unsafe characters.
 - Uploaded files are stored in user-specific directories, isolated from the system.
 
